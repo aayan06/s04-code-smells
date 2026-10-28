@@ -160,3 +160,39 @@ add_enemies(queue, "Shooter", 5)
 - Duplicated code can make a project harder to maintain because the same changes may need to be made in multiple places.
 - Creating a reusable function allows me to write the logic once and use it throughout the game.
 - The refactoring helps reduce duplication and makes it easier to add new levels or enemy changes in the future.
+
+## 3. Loops
+**Introduction:**
+A loop smell happens when one loop does several jobs at once, like filtering, transforming, and collecting results. This usually starts with a simple loop, and then each new rule gets added inside it.
+
+**Why it's bad:** the reader can't tell what the loop produces without reading every line, and each new rule makes the loop longer and risks changing the behavior.
+
+**Fix:** Replace the Loop with a Pipeline (p. 231), keep each step on its own line using `filter` (keeps only the items that pass a test) and `map` (changes each item into something new), so the code reads top to bottom.
+
+**Example:** a game wants the names of players who beat the high score of 1000. The loop checks the score, picks outs the name, and builds the list all in one block.
+
+**JavaScript example:** the loop does three jobs in one place. If the game adds another rule, like only showing players who finished the level, the `if` gets longer and harder to read.
+
+```javascript
+// Before
+const highScorers = [];
+
+for(let i = 0; i < players.length; i++) {
+    if(players[i].score > 1000) {
+        highScorers.push(players[i].name);
+    }
+}
+
+// After
+const highScorers = players
+    .filter(player => player.score > 1000)
+    .map(player => player.name);
+```
+Now each step has its own line: keep the players who beat the high score, then get their names. `filter` and `map` each create a new array, and the final one is saved into `highScorers`. The original `players` list is never changed.
+
+**What I learned:**
+- A loop that filters, transforms, and collects at once gets harder to read with every new rule.
+- A pipeline gives each step its own line, so the code can be read from top to bottom.
+- Not every loop needs to change. A simple loop that only does one thing is fine as it is.
+
+
