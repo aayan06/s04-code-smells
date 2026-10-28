@@ -13,35 +13,66 @@ Code smells across languages
 
 ## 1. Mysterious Name
 
-A mysterious name is when a variable or function is named something like `x`, `tmp`, or `calc` so you can't tell what it does without reading the whole thing. Fowler says this is the first smell to fix because good names make code readable on their own.
+**Introduction:**
 
-**Why it's bad:** you waste time figuring out what the code means, and short names get mixed up easily.
+A mysterious name is when a variable, function, or class is named something that doesn't tell you what it does. 
+Names like `x`, `tmp`, `data`, or `calc` might make sense to the person writing the code at the time, but anyone reading it later has to read the whole thing just to figure out what it's for.
 
-**Fix:** Change Function Declaration (p. 124), Rename Variable (p. 137), or Rename Field (p. 244).
+For example, if a game has a function called `upd(p, d)`, you can't tell if it updates a position, a player, or something else without opening it. 
+This slows everyone down and makes it easy to use the wrong variable by mistake.
 
-**Example:** a function called calc(d, r) could mean anything, but order_total(unit_price, quantity) tells you exactly what it does without reading the body. The same idea works in any language like Python, JavaScript, or Java. The fix is just renaming x, tmp, or proc to what the thing actually is.
+**Prevention and Refactoring:**
 
-**Things I found interesting in the reading:**
-- Fowler and Beck say naming is one of the two hard things in programming, and that renaming is probably the refactoring they do *most often*.
-- People avoid renaming because it feels like it's not worth the effort, but a good name can save hours of confusion later on.
-- The coolest point: if you can't come up with a good name for something, that usually means the design itself is confusing. So struggling with a name is a hint to simplify the code, not just pick a better word.
+The best way to prevent this smell is to name things after what they actually are or do, not how they work. 
+A good test is: can someone understand what this function does from the name alone, without reading the body?
 
-**Python example:** same code, only the names changed, but now you can tell what it does without reading the body.
+Martin Fowler says renaming is one of the most common refactorings he does. 
+He describes three techniques for it: Change Function Declaration (p. 124) for renaming a function, Rename Variable (p. 137) for variables, and Rename Field (p. 244) for fields in a class. 
+He also points out that if you can't think of a good name for something, that's usually a sign the code itself is confusing and needs to be simplified.
 
+**Code Example: Taking Damage in a Game:**
+
+In a small Python game I was working on, I wrote a function that handles the player getting hit. 
+It takes the player's health, subtracts the damage, and makes sure health doesn't go below zero. 
+It worked, but when I came back to it later I had to read the whole function to remember what it was doing, because the names didn't tell me anything.
+
+**Before Refactoring:**
 ```python
-# Before
-def calc(p, q):
-    return p * q
+def upd(h, d, a):
+    n = h - (d - a)
+    if n < 0:
+        n = 0
+    return n
 
-t = calc(4.99, 3)
-
-# After
-def order_total(unit_price, quantity):
-    return unit_price * quantity
-
-total = order_total(4.99, 3)
+h = upd(100, 30, 10)
 ```
 
+What is wrong with the code?
+
+The function is called `upd`, which could mean anything. 
+The parameters are `h`, `d`, and `a`, and the result is stored in `n`. 
+You can't tell this is about health and damage without reading every line and working it out. 
+If someone passed the arguments in the wrong order, nothing would warn them because the names don't mean anything.
+
+**After Refactoring:**
+```python
+def take_damage(health, damage, armor):
+    new_health = health - (damage - armor)
+    if new_health < 0:
+        new_health = 0
+    return new_health
+
+health = take_damage(100, 30, 10)
+```
+
+Nothing about the logic changed, only the names. 
+Now you can read `take_damage(health, damage, armor)` and know exactly what it does without looking inside. 
+It's also obvious which argument is which, so it's much harder to mix them up.
+
+**What I Learned:**
+- A mysterious name doesn't break the code, but it costs time every single time someone reads it.
+- Renaming is one of the easiest refactorings to do, and it's also one of the most useful.
+- When I struggle to name something, it usually means the function is doing too much or I don't fully understand it yet, so that's a sign to simplify it first.
 ## 2. Duplicated Code
 
 **Introduction:**
