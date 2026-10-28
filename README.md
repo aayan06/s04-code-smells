@@ -25,3 +25,22 @@ A mysterious name is when a variable or function is named something like `x`, `t
 - Fowler and Beck say naming is one of the two hard things in programming, and that renaming is probably the refactoring they do *most often*.
 - People avoid renaming because it feels like it's not worth the effort, but a good name can save hours of confusion later on.
 - The coolest point: if you can't come up with a good name for something, that usually means the design itself is confusing. So struggling with a name is a hint to simplify the code, not just pick a better word.
+
+## 2. Duplicated Code
+
+
+
+## 3. Loops
+
+A loop code smell happens when a for or while loop tries to do too many things at once, like checking numbers, changing values, and adding them together. 
+
+** Why it's bad:** When a loop does too many things, it's harder to understand, find mistakes, and make corrections or changes later.
+
+**Fix:** Replace Loop with Pipeline (p. 231). This means breaking a complicated loop into smaller steps so each step has one clear job. 
+
+**Example:** Imagine a loop that goes through a list of orders, checks which ones are completed, adds up their totals, and stores the results can be difficult to follow. Instead, you could use separate operations to filter completed orders, extract their totals, and calculate the sum. In Python, for example, using methods like filter, map, and reduce can make the code more readable. The goal isn't to get rid of every loop, but to make sure the logic is easy to understand.
+
+**Things I found interesting in the reading:**
+- Fowler points out that loops can become harder to understand when the combine several different operations into one block of code.
+- I found it interesting that breaking a loop into smaller steps, can make the code almost explain itself because each operation tells you exactly what its doing instead of having you figure it out from the loop body.
+- Sometimes a few separate operations are easier to understand than one big loop because each step has a clear purpose. Refactoring loops is about making the code easier to read and maintain, not just making it shorter. 
