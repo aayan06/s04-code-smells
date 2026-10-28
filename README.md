@@ -34,7 +34,7 @@ A mysterious name is when a variable or function is named something like `x`, `t
 
 A loop code smell happens when a for or while loop tries to do too many things at once, like checking numbers, changing values, and adding them together. 
 
-** Why it's bad:** When a loop does too many things, it's harder to understand, find mistakes, and make corrections or changes later.
+**Why it's bad:** When a loop does too many things, it's harder to understand, find mistakes, and make corrections or changes later.
 
 **Fix:** Replace Loop with Pipeline (p. 231). This means breaking a complicated loop into smaller steps so each step has one clear job. 
 
