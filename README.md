@@ -26,6 +26,22 @@ A mysterious name is when a variable or function is named something like `x`, `t
 - People avoid renaming because it feels like it's not worth the effort, but a good name can save hours of confusion later on.
 - The coolest point: if you can't come up with a good name for something, that usually means the design itself is confusing. So struggling with a name is a hint to simplify the code, not just pick a better word.
 
+**Python example:** same code, only the names changed, but now you can tell what it does without reading the body.
+
+```python
+# Before
+def calc(p, q):
+    return p * q
+
+t = calc(4.99, 3)
+
+# After
+def order_total(unit_price, quantity):
+    return unit_price * quantity
+
+total = order_total(4.99, 3)
+```
+
 ## 2. Duplicated Code
 
 **Introduction:**
@@ -105,6 +121,40 @@ Phaser.Utils.Array.Shuffle(this.spawnQueue);
 Now levels 2 and 3 can use the same function with their own enemy counts. 
 This removes the need to repeat the same logic in every level and makes the code a lot easier to maintain.
 If any change is needed, we only have to update the function once.
+
+**Python example:** the same smell in Python, the loops in level 1 and level 2 are identical except for the numbers, so the loop gets pulled into one function.
+
+```python
+# Before
+# Level 1
+queue = []
+for i in range(6):
+    queue.append("Charger")
+for i in range(3):
+    queue.append("Shooter")
+
+# Level 2
+queue = []
+for i in range(10):
+    queue.append("Charger")
+for i in range(5):
+    queue.append("Shooter")
+
+# After
+def add_enemies(queue, enemy_type, count):
+    for i in range(count):
+        queue.append(enemy_type)
+
+# Level 1
+queue = []
+add_enemies(queue, "Charger", 6)
+add_enemies(queue, "Shooter", 3)
+
+# Level 2
+queue = []
+add_enemies(queue, "Charger", 10)
+add_enemies(queue, "Shooter", 5)
+```
 
 **What I Learned:**
 - Duplicated code can make a project harder to maintain because the same changes may need to be made in multiple places.
