@@ -28,7 +28,14 @@ A mysterious name is when a variable or function is named something like `x`, `t
 
 ## 2. Duplicated Code
 
-
+Duplicated code is when the same chunk of code shows up in more than one place. Sometimes it’s an exact copy, sometimes it’s close with a few lines changed, but the same idea is written out twice.
+Why it’s bad: you have to read both copies to see if they’re actually the same, and if you change one you have to remember to change the other. Forget one and now you have a bug that’s really hard to track down.
+Fix: Extract Function (p. 106), Slide Statements (p. 223), or Pull Up Method (p. 350).
+Example: say you have two functions that both get the customer name, build a greeting, and format the date before doing their own thing. If the date format changes you have to fix it in both. Pulling those lines into one function like build_header(customer, date) means there’s only one spot to change. This happens in Python, JavaScript, Java, anything, since copy paste works everywhere.
+Things I found interesting in the reading:
+Fowler doesn’t hedge on this one, he says if you see the same structure twice you can be sure the code will be better if you combine it. Most other smells he’s more “it depends” about.
+Sometimes the first step isn’t extracting anything, it’s just moving lines around (Slide Statements) so the duplicate parts are next to each other. The duplication can be hidden by the order the code is in.
+He mentions in the Large Class section that when a class has too many fields, duplicated code “cannot be far behind.” So seeing a lot of copies is usually a sign something bigger needs to be split up.
 
 ## 3. Loops
 
