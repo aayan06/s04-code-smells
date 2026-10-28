@@ -28,26 +28,77 @@ A mysterious name is when a variable or function is named something like `x`, `t
 
 ## 2. Duplicated Code
 
-Duplicated code is when the same chunk of code shows up in more than one place. Sometimes it’s an exact copy, sometimes it’s close with a few lines changed, but the same idea is written out twice.
-Why it’s bad: you have to read both copies to see if they’re actually the same, and if you change one you have to remember to change the other. Forget one and now you have a bug that’s really hard to track down.
-Fix: Extract Function (p. 106), Slide Statements (p. 223), or Pull Up Method (p. 350).
-Example: say you have two functions that both get the customer name, build a greeting, and format the date before doing their own thing. If the date format changes you have to fix it in both. Pulling those lines into one function like build_header(customer, date) means there’s only one spot to change. This happens in Python, JavaScript, Java, anything, since copy paste works everywhere.
-Things I found interesting in the reading:
-Fowler doesn’t hedge on this one, he says if you see the same structure twice you can be sure the code will be better if you combine it. Most other smells he’s more “it depends” about.
-Sometimes the first step isn’t extracting anything, it’s just moving lines around (Slide Statements) so the duplicate parts are next to each other. The duplication can be hidden by the order the code is in.
-He mentions in the Large Class section that when a class has too many fields, duplicated code “cannot be far behind.” So seeing a lot of copies is usually a sign something bigger needs to be split up.
+**Introduction:**
+Duplicated code happens when the same or very similar code appears in multiple places. 
+This often happens when developers copy and paste code to create similar features, instead of reusing existing code.
 
-## 3. Loops
+For example, if multiple levels in a game use the same code to spawn enemies, any changes to that code would have to be made in every level. 
+This makes the code harder to maintain and increases the chance of mistakes.
 
-A loop code smell happens when a for or while loop tries to do too many things at once, like checking numbers, changing values, and adding them together. 
+**Prevention and Refactoring:**
+One way to prevent duplicated code is to identify repeated sections and move them into a reusable function or class. 
+This allows the same code to be used in multiple places without having to rewrite it each time.
 
-**Why it's bad:** When a loop does too many things, it's harder to understand, find mistakes, and make corrections or changes later.
+Martin Fowler describes several refactoring techniques for dealing with duplicated code, including Extract Function (p. 106). 
+This technique moves a section of code into its own function that can be called wherever it is needed.
 
-**Fix:** Replace Loop with Pipeline (p. 231). This means breaking a complicated loop into smaller steps so each step has one clear job. 
+In a game, for example, you could create a function that adds a certain number of enemies to a spawn queue. 
+Each level could call that function with different enemy types and quantities. 
+This would reduce repeated code and make it easier to maintain and add new levels.
 
-**Example:** Imagine a loop that goes through a list of orders, checks which ones are completed, adds up their totals, and stores the results can be difficult to follow. Instead, you could use separate operations to filter completed orders, extract their totals, and calculate the sum. In Python, for example, using methods like filter, map, and reduce can make the code more readable. The goal isn't to get rid of every loop, but to make sure the logic is easy to understand.
+**Code Example: Creating Enemies in a Game:**
+In my CMPM 120 RPG game, I created three regular levels with different numbers of Chargers, Shooters, and Tanks. 
+Each level uses three for loops to add the correct number of each enemy to a spawn queue. 
+Although the enemy counts change between levels, the code structure stays the same.
 
-**Things I found interesting in the reading:**
-- Fowler points out that loops can become harder to understand when the combine several different operations into one block of code.
-- I found it interesting that breaking a loop into smaller steps, can make the code almost explain itself because each operation tells you exactly what its doing instead of having you figure it out from the loop body.
-- Sometimes a few separate operations are easier to understand than one big loop because each step has a clear purpose. Refactoring loops is about making the code easier to read and maintain, not just making it shorter. 
+This means I repeat nearly identical code in Levels 1, 2, and 3. 
+If I wanted to change how enemies are added to the queue, I would have to update the code in multiple places. 
+I could refactor this by creating a reusable function that adds enemies to the queue based on their type and quantity.
+
+**Before Refactoring:**
+// Level 1
+this.spawnQueue = [];
+
+for (let i = 0; i < 6; i++)
+    this.spawnQueue.push("Charger");
+
+for (let i = 0; i < 3; i++)
+    this.spawnQueue.push("Shooter");
+
+for (let i = 0; i < 1; i++)
+    this.spawnQueue.push("Tank");
+
+Phaser.Utils.Array.Shuffle(this.spawnQueue);
+
+What is wrong with the code?
+
+The same code is repeated in Levels 1, 2, and 3, only changing the number of each enemy. 
+This creates duplicated code because each level has its own copy of the same logic. 
+If I wanted to change how enemies are added to the queue, I would have to make the same changes in multiple places, which takes extra time and could lead to mistakes.
+
+**After Refactoring:**
+function addEnemyTypes(queue, type, count) {
+    for (let i = 0; i < count; i++) {
+        queue.push(type);
+    }
+}
+
+Now each level can use the same function with different numbers.
+
+// Level 1
+this.spawnQueue = [];
+
+addEnemyTypes(this.spawnQueue, "Charger", 6);
+addEnemyTypes(this.spawnQueue, "Shooter", 3);
+addEnemyTypes(this.spawnQueue, "Tank", 1);
+
+Phaser.Utils.Array.Shuffle(this.spawnQueue);
+
+Now levels 2 and 3 can use the same function with their own enemy counts. 
+This removes the need to repeat the same logic in every level and makes the code a lot easier to maintain.
+If any change is needed, we only have to update the function once.
+
+**What I Learned:**
+- Duplicated code can make a project harder to maintain because the same changes may need to be made in multiple places.
+- Creating a reusable function allows me to write the logic once and use it throughout the game.
+- The refactoring helps reduce duplication and makes it easier to add new levels or enemy changes in the future.
