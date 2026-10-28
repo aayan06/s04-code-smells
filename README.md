@@ -29,6 +29,7 @@ A mysterious name is when a variable or function is named something like `x`, `t
 ## 2. Duplicated Code
 
 **Introduction:**
+
 Duplicated code happens when the same or very similar code appears in multiple places. 
 This often happens when developers copy and paste code to create similar features, instead of reusing existing code.
 
@@ -36,6 +37,7 @@ For example, if multiple levels in a game use the same code to spawn enemies, an
 This makes the code harder to maintain and increases the chance of mistakes.
 
 **Prevention and Refactoring:**
+
 One way to prevent duplicated code is to identify repeated sections and move them into a reusable function or class. 
 This allows the same code to be used in multiple places without having to rewrite it each time.
 
@@ -47,6 +49,7 @@ Each level could call that function with different enemy types and quantities.
 This would reduce repeated code and make it easier to maintain and add new levels.
 
 **Code Example: Creating Enemies in a Game:**
+
 In my CMPM 120 RPG game, I created three regular levels with different numbers of Chargers, Shooters, and Tanks. 
 Each level uses three for loops to add the correct number of each enemy to a spawn queue. 
 Although the enemy counts change between levels, the code structure stays the same.
