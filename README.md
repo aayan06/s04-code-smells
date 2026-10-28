@@ -56,6 +56,7 @@ If I wanted to change how enemies are added to the queue, I would have to update
 I could refactor this by creating a reusable function that adds enemies to the queue based on their type and quantity.
 
 **Before Refactoring:**
+```
 // Level 1
 this.spawnQueue = [];
 
@@ -69,6 +70,7 @@ for (let i = 0; i < 1; i++)
     this.spawnQueue.push("Tank");
 
 Phaser.Utils.Array.Shuffle(this.spawnQueue);
+```
 
 What is wrong with the code?
 
@@ -77,14 +79,16 @@ This creates duplicated code because each level has its own copy of the same log
 If I wanted to change how enemies are added to the queue, I would have to make the same changes in multiple places, which takes extra time and could lead to mistakes.
 
 **After Refactoring:**
+```
 function addEnemyTypes(queue, type, count) {
     for (let i = 0; i < count; i++) {
         queue.push(type);
     }
 }
+```
 
 Now each level can use the same function with different numbers.
-
+```
 // Level 1
 this.spawnQueue = [];
 
@@ -93,6 +97,7 @@ addEnemyTypes(this.spawnQueue, "Shooter", 3);
 addEnemyTypes(this.spawnQueue, "Tank", 1);
 
 Phaser.Utils.Array.Shuffle(this.spawnQueue);
+```
 
 Now levels 2 and 3 can use the same function with their own enemy counts. 
 This removes the need to repeat the same logic in every level and makes the code a lot easier to maintain.
